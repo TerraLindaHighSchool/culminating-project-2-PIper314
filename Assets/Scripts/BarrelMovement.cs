@@ -7,7 +7,7 @@ public class BarrelMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        GetComponent<Rigidbody>().velocity = new Vector3(-.2f, 0, 0);
+        GetComponent<Rigidbody>().velocity = new Vector3(-5, 0, 0);
     }
 
     // Update is called once per frame

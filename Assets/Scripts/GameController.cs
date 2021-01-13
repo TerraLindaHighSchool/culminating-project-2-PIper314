@@ -1,33 +1,69 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
+    //public TextMeshProUGUI timerText;
+    public TextMeshProUGUI gameOverText;
+    public Button restartButton;
+    public GameObject titleScreen;
+
+    public bool isGameActive;
+
+    private float startTime;
     public Transform tileObj;
     public Transform crateObj;
     public Transform rockObj;
-    public Transform barrelObj;
+    //public Transform barrelObj;
 
     private Vector3 nextCrateObj;
     private Vector3 nextTileSpawn;
     private Vector3 nextRockSpawn;
-    private Vector3 nextBarrelSpawn;
+    //private Vector3 nextBarrelSpawn;
     private int randomZ;
     
     // Start is called before the first frame update
     void Start()
     {
+        startTime = Time.time;
+      
         nextTileSpawn.x = 21;
         StartCoroutine(spawnTile());
     }
 
-    // Update is called once per frame
-    void Update()
+    /*public void UpdateTimer()
     {
-        
+        float t = Time.time - startTime;
+
+        string minutes = ((int)t / 60).ToString();
+        string seconds = (t % 60).ToString("f2");
+
+        timerText.text = minutes + ":" + seconds;
+    }*/
+
+    public void GameOver()
+    {
+        gameOverText.gameObject.SetActive(true);
+        restartButton.gameObject.SetActive(true);
+        isGameActive = false;
     }
 
+    public void RestartGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void StartGame()
+    {
+        isGameActive = true;
+        startTime = 0;
+
+        titleScreen.gameObject.SetActive(false);
+    }
     IEnumerator spawnTile()
     {
         yield return new WaitForSeconds(1);
@@ -60,10 +96,6 @@ public class GameController : MonoBehaviour
         nextRockSpawn.z = randomZ;
         Instantiate(rockObj, nextRockSpawn, rockObj.rotation);
 
-        nextBarrelSpawn.x = nextTileSpawn.x - 1;
-        nextBarrelSpawn.y = .179f;
-        nextBarrelSpawn.z = randomZ;
-        Instantiate(barrelObj, nextBarrelSpawn, barrelObj.rotation);
         StartCoroutine(spawnTile());
     }
 
