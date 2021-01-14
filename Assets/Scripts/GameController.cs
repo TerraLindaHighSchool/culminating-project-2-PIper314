@@ -5,16 +5,16 @@ using TMPro;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+
 public class GameController : MonoBehaviour
 {
-    //public TextMeshProUGUI timerText;
+    
     public TextMeshProUGUI gameOverText;
     public Button restartButton;
     public GameObject titleScreen;
 
     public bool isGameActive;
 
-    private float startTime;
     public Transform tileObj;
     public Transform crateObj;
     public Transform rockObj;
@@ -29,21 +29,9 @@ public class GameController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        startTime = Time.time;
-      
         nextTileSpawn.x = 21;
         StartCoroutine(spawnTile());
     }
-
-    /*public void UpdateTimer()
-    {
-        float t = Time.time - startTime;
-
-        string minutes = ((int)t / 60).ToString();
-        string seconds = (t % 60).ToString("f2");
-
-        timerText.text = minutes + ":" + seconds;
-    }*/
 
     public void GameOver()
     {
@@ -60,7 +48,7 @@ public class GameController : MonoBehaviour
     public void StartGame()
     {
         isGameActive = true;
-        startTime = 0;
+        
 
         titleScreen.gameObject.SetActive(false);
     }

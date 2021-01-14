@@ -1,19 +1,24 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class PlayerController : MonoBehaviour
 {
     private GameController gameController;
+    public TextMeshProUGUI timerText;
 
     private string laneChange = "n";
     private string jump = "n";
+    private float startTime;
 
-    
 
     // Start is called before the first frame update
     void Start()
     {
+        startTime = Time.time;
+       
         gameController = GameObject.Find("GameController").GetComponent<GameController>();
         GetComponent<Rigidbody>().velocity = new Vector3(2, 0, 0);
     }
@@ -21,8 +26,14 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
-        if(Input.GetKey("d") && (laneChange == "n") && (transform.position.z > -.9) && (jump == "n"))
+        float t = Time.time - startTime;
+
+        string minutes = ((int)t / 60).ToString();
+        string seconds = (t % 60).ToString("f1");
+
+        timerText.text = "Timer: " + minutes + ":" + seconds;
+
+        if (Input.GetKey("d") && (laneChange == "n") && (transform.position.z > -.9) && (jump == "n"))
         {
             GetComponent<Rigidbody>().velocity = new Vector3(2, 0, -1);
             laneChange = "y";
@@ -46,7 +57,7 @@ public class PlayerController : MonoBehaviour
 
     IEnumerator stopJump()
     {
-        yield return new WaitForSeconds(.5f);
+        yield return new WaitForSeconds(.75f);
         GetComponent<Rigidbody>().velocity = new Vector3(2, -1f, 0);
         yield return new WaitForSeconds(.75f);
         GetComponent<Rigidbody>().velocity = new Vector3(2, 0, 0);
@@ -66,6 +77,7 @@ public class PlayerController : MonoBehaviour
         {
             Debug.Log("Game Over");
             gameController.GameOver();
+            Destroy(gameObject);
         }
     }
 }
